@@ -1,0 +1,181 @@
+{% extends 'faculty/faculty_main.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.5s;
+    }
+  
+    .overlay.show {
+      visibility: visible;
+      opacity: 1;
+    }
+  
+    .overlay-content {
+      text-align: center;
+      color: #fff;
+    }
+  
+    #spinner2 {
+      height: 100px;
+      width: 100px;
+      border: 10px solid #fff;
+      border-top: 10px solid #1abc9c;
+      border-radius: 50%;
+      animation: spin 3s linear infinite;
+    }
+  
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+  
+  <div id="overlay2" class="overlay">
+    <div class="overlay-content">
+      <div id="spinner2"></div>
+      <p>Please wait!</p>
+    </div>
+  </div>
+
+<main>
+    
+    <h2 class="dash-title">Take Attendance by Ml Model</h2>
+    <section class="recent">
+        <div class="table-div">
+            <div class="table-card">
+              <form method="POST" class="needs-validation" nonalidate="" autocomplete="off" enctype="multipart/form-data">
+                {% csrf_token %}
+              <nav class="navbar  mt-2" style="background-color: rgb(154, 154, 154); color: #fff;">
+                <div class="container-fluid">
+                  <a class="navbar-brand fw-bold ms-3">CLASS</a>
+    
+
+                    <select id="standard-select" class="form-select me-3" name="select_student_class" required>
+                        <option value="">--Select Class--</option>
+                        {% for class in total_classes%}
+                        <option value="{{class.class_name}}">{{class.class_name}}</option>
+                        {% endfor %}
+                    </select>
+                    
+                  
+                </div>
+              </nav>
+
+                
+                    <div class="row justify-content-evenly" style="margin-top:5%;">
+                      <div class="mb-3 col-12 col-md-6" style="display: flex; align-items: center;">
+                          <label for="file" class="form-label fw-bold" style="margin-right: 10px;"> <i class="bi bi-file-earmark-font-fill"></i> Upload Class Image</label>
+                          <input type="file" class="form-control p-3" id="file" name="picupload" required style="margin-right: 10px;">
+                          <button class="btn btn-outline-dark" type="submit">Submit</button>
+                      </div>
+                  </div>
+                  
+                </form>
+                <br>
+                <br>
+                <!-- Testing{% for item in identified %}
+                <h4 style="text-align:center;">{{ item}}</h4>
+                {% endfor %}-->    
+                <!--<h1><span class="red"></span>Names<span class="red"></span> <span class="black">List</span></h1>-->
+                   
+            </div>
+        </div>
+        <div class="table-div">
+          <form method="POST" action="/confirmation/{{ classroom_name }}" novalidate=""  autocomplete="off">
+            {% csrf_token %}
+            <div class="table-card" style="overflow-x:scroll;">
+                 {% if identified %}
+                 
+                <table class="container" id="tablemodel" style="width:80%;">
+                    <thead>
+                        <tr>
+                          <td><h3>S.No</h3></td>
+                          <td><h3>Id No </h3></td>
+                            <td><h3>Names</h3></td>
+                            <td><h3>Image</h3></td>
+                            <td><h3>Present/Absent</h3></td>
+                            
+                            <!--<th><h1>Clicks</h1></th>
+                            <th><h1>Average</h1></th>!-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {% for i,j in predlist %}
+                        <tr>
+                        <td><h4>{{ forloop.counter }}<h4></td>
+                        <td><h4>{{ j }}</h4></td>
+                        <td><h4>{{ j }}</h4></td>
+                        <td> <img src="/media/faces/{{ i }}.png"
+                            alt="" style="width: 70px; height:70px; border-radius: 50%; border: 3px solid rgb(67, 67, 132);"></td>
+                               
+                        <td>
+                                <div class="btn-group input-field form-check" role="group" aria-label="Basic radio toggle button group" aria-required="true">
+                                <input type="radio" class="btn-check"   name="{{ j }}" value="present" id="{{ j }}_present" autocomplete="off"  checked>
+                                <label class="btn btn-outline-success" for="{{ j }}_present" >Present</label>
+                            
+                                <input type="radio" class="btn-check"  name="{{ j }}" value="absent" id="{{ item }}_absent" autocomplete="off"  >
+                                <label class="btn btn-outline-danger" for="{{ j }}_absent" >Absent</label>
+                            </div>
+                        </td>
+                    </tr>
+                        
+                        {% endfor %}  
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+            {% if identified %}
+            {% if predlist %}
+            <center><button class="mb-3 mt-2 fw-bold" type="submit" style="background-color: rgb(18, 1, 1); color:lavender ; padding: 2px 25px 2px 25px;">Submit</button></center>
+            {% endif %}
+            {% endif %}
+            
+                        <script>$(document).ready(function () {
+                            $('#example').DataTable();
+                        });</script>
+        </div>
+      </form>
+    </div>
+</section>
+<script>$(document).ready(function () {
+    $('#tablemodel').DataTable();
+});</script>
+
+</main>
+<script>
+    function showOverlay() {
+      var overlay = document.getElementById("overlay2");
+      overlay.classList.add("show");
+    }
+  
+    function hideOverlay() {
+      var overlay = document.getElementById("overlay2");
+      overlay.classList.remove("show");
+    }
+  
+    // Show the overlay when the form submits a POST request
+    document.querySelector('form').addEventListener('submit', function() {
+      showOverlay();
+    });
+  
+    // Hide the overlay when the page finishes reloading
+    window.addEventListener('load', function() {
+      hideOverlay();
+    });
+  </script>
+{% endblock %}

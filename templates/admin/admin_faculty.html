@@ -1,0 +1,123 @@
+{% extends 'admin/basic.html' %}
+{% load static %}
+
+{% block content %}
+<main> 
+    <section class="recent" >
+      <div class="table-div">
+          <div class="table-card " > 
+            <div class="card">
+              <div class="card-header" >
+               <h2><center>Add Faculty</center></h2>
+              </div>
+               <form
+               method="POST"
+               class="needs-validation"
+               novalidate=""
+               autocomplete="off"
+             >{% csrf_token %}
+       
+               
+                   <div class="row ml-2 mr-2 mb-3 mt-3">
+                       <div class="col-md-6 mt-md-0 mt-3">
+                           <label>First Name</label>
+                           <input name="user_firstname" type="text" class="form-control" required>
+                       </div>
+                       <div class="col-md-6 mt-md-0 mt-3">
+                           <label>Last Name</label>
+                           <input name="user_lastname" type="text" class="form-control" required>
+                       </div>
+                   </div>
+                   <div class="row ml-2 mr-2 mb-3">
+                     <div class="col-md-6 mt-md-0 mt-3">
+                         <label>User Name</label>
+                         <input name="user_id" type="text" class="form-control" required>
+                     </div>
+                     <div class="col-md-6 mt-md-0 mt-3">
+                         <label>Password</label>
+                         <input name="password" type="password" class="form-control" required>
+                     </div>
+                 </div>
+                   <div class="row ml-2 mr-2 mb-3">
+                       <div class="col-md-6 mt-md-0 mt-3">
+                           <label>Date of Birth</label>
+                           <input name="user_dob" type="date" class="form-control" required>
+                       </div>
+                       <div class="col-md-6">
+                         <label  for="select_sex">Gender</label>
+                         <select class="col-md-12" name="user_sex" id="select_sex">
+                           <option value="Male">Male</option>
+                           <option value="Female">Female</option>
+                         </select>
+                       </div>
+                   </div>
+                   <div class="row ml-2 mr-2 mb-3">
+                       <div class="col-md-6 mt-md-0 mt-3">
+                           <label>Email</label>
+                           <input name="email" type="email" class="form-control" required>
+                       </div>
+                       <div class="col-md-6 mt-md-0 mt-3">
+                        <label>Phone Number</label>
+                        <input name="phn" type="text" class="form-control" required>
+                     </div>
+                   </div>
+                   <div class="row ml-3 mr-2 mb-3">
+                     
+                   </div>
+                   <center><button type="submit" class="btn btn-success mt-3 mb-3">Submit</button></center>
+               
+       
+           
+             </form>
+          </div>
+        </div>
+  </section>
+    <section class="recent">
+        <div class="table-div">
+            <div class="table-card ">
+              <br>
+              <center><h2>Faculty Details</h2><center>
+                <br>
+                <div class="time-table">
+              <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th><h4 style="color:black;">S.No</h4></th>
+                        <th><h4 style="color:black;">Faculty ID</h4></th>
+                        <th><h4 style="color:black;">Faculty name</h4></th>
+                        <th><h4 style="color:black;">Profile</h4></th>
+                        <th><h4 style="color:black;">Actions</h4></th>
+                    </tr>
+                </thead>
+         
+                <tbody>
+                  {% for i in faculty %}
+                  <tr>
+                      <td><h5>{{ forloop.counter }}</h5></td>
+                      <td><h5>{{ i.facultyname.username }}</h5></td>
+                      <td><h5>{{ i.facultyname.first_name }}.{{ i.facultyname.last_name }}</h5></td>
+                      <td><img src="{{ i.facultyname.profile_pic.url }}" width="50px"></td>
+                      
+                      <td>
+                        <a style="color:green;" class="edit" title="Edit" data-toggle="tooltip" ><i class="material-icons" ></i>Edit</a>&nbsp;&nbsp;&nbsp;
+                        <a style="color:red;" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i>Delete</a>
+                      </td>
+                  </tr>
+                {% endfor %}
+            
+                </tbody>
+            </table>
+          </div>
+            </div>
+        </div>
+        
+    </section> 
+       
+  </main>
+  {% if errorcame is 1 %}
+  <script language="JavaScript">alert('UserID Already Exists, Try another')</script>
+{% endif %}
+{% if errorcame is 0 %}
+  <script language="JavaScript">alert('Faculty Succesfully Registered')</script>
+{% endif %}
+{% endblock %}

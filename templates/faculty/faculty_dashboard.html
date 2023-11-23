@@ -1,0 +1,256 @@
+{% extends 'faculty/faculty_main.html' %}
+{% load static %}
+{% load newtags %}
+{% block title %}
+          Dash Board
+{% endblock title %}
+
+{% block content %}
+{% if logged_in %}
+<style>
+  .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.5s;
+  }
+
+  .overlay.show {
+      visibility: visible;
+      opacity: 1;
+  }
+
+  .overlay-content {
+      text-align: center;
+      color: #fff;
+  }
+
+  #spinner {
+      height: 100px;
+      width: 100px;
+      border: 10px solid #fff;
+      border-top: 10px solid #1abc9c;
+      border-radius: 50%;
+      animation: spin 3s linear infinite;
+  }
+
+  @keyframes spin {
+       100% {
+          transform: rotate(360deg);
+       }
+  }
+</style>
+<div id="overlay" class="overlay">
+  <div class="overlay-content">
+      <div id="spinner"></div>
+      <p>please Wait !</p>
+  </div>
+</div>
+
+{% endif %}
+<main> 
+            
+    <h2 class="dash-title">Dash Board</h2>
+    
+    <div class="row justify-content-between">
+
+        <div class=" bg-light  p-2 shadow col-12 col-lg-4 mb-3" style="">
+            <h5 class="mt-2"><i class="ms-2 bi bi-briefcase-fill"></i> Today clases {{ today }}</h5>
+            <table class="table mt-4">
+                <thead>
+                  <tr>
+                    {% for i in periods %}
+                    <th scope="col">{{ i.period }}</th>
+                    {% endfor %}
+                </thead>
+                <tbody>
+                  <tr>
+                    {% for k in today_periods %}
+                    <td>{{ k }}</td>
+                    {% endfor %}
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class=" bg-light  p-2 shadow col-12 col-lg-4 mb-3">
+           <div>
+                <div class="d-flex justify-content-between">
+                    <h5 class="mt-2 mb-2"><i class="ms-2 bi bi-alarm-fill"></i> Remainder</h5>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn text-end" data-bs-toggle="modal" data-bs-target="#Remainder" >
+                        <i class="bi bi-calendar-plus  fs-5"></i>
+                    </button>
+                </div>
+             
+           </div>
+            
+    
+                <!-- Modal -->
+                <form
+               method="POST"
+               class="needs-validation"
+               novalidate=""
+               autocomplete="off"
+             >{% csrf_token %}
+                <div class="modal fade" id="Remainder" tabindex="-1" aria-labelledby="Remainder" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div>  <h5 class="modal-title" id="exampleModalLabel">Add  Remainder</h5> </div>
+                            <div > <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> </div>
+                        </div>
+                        <form action="">
+                        <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="title" class="form-label"> <i class="bi bi-calendar"></i> Title</label>
+                                    <input type="text" class="form-control" id="title" name="titlename" placeholder="Enter Remainder title">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="date" class="form-label"> <i class="bi bi-calendar"></i> Date</label>
+                                    <input type="Date" class="form-control" id="date" name="datename" aria-describedby="date">
+                                </div>
+
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here" name="commentname" id="text" style="height: 100px"></textarea>
+                                    <label for="text">Comments</label>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+            </form>
+                <div style = "overflow-y: scroll; height: 130px;">
+                    <div class="alert " role="alert">
+                        {% for  i in remainders %}
+                          <h6 class="alert-heading fw-bold">{{ i.title }}- {{ i.created_at }}</h6>
+                          <p class="">{{ i.comment }}</p>
+                          {% endfor %}
+                      </div>
+                </div>
+        </div>
+
+
+        <div class=" bg-light p-2  shadow col-12 col-lg-3 mb-3">
+            <h5 class="mt-2"><i class=" ms-2 bi bi-pie-chart-fill"></i> Details</h5>
+            <div class="summary-single">
+                <span class="ti-id-badge"></span>
+                <div>
+                    <h5>{{ classcount }}</h5>
+                    <small>Number of sections</small>
+                </div>
+            </div>
+            <div class="summary-single">
+                <span class="ti-face-smile"></span>
+                <div>
+                    <h5>{{ studentcount }}</h5>
+                    <small>Number of students</small>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    
+    <section class="recent">
+        <div class="activity-grid">
+            <div class="activity-card">
+                <div>
+                    <canvas id="myChart"></canvas>
+                  </div>
+            </div>
+            
+            <div class="summary">
+              
+            
+                
+                <div class="bday-card shadow">
+                    <div class="bday-flex justify-content-between">
+                        <div class="col-3">
+                            <img src="https://missionvet.ca/wp-content/uploads/2020/01/User-Profile-PNG-1.png" class="img-fluid" style="width: 50px; border-radius: 50%;">
+                        </div>
+                        <div class="bday-info col-8 ">
+                            <h5>Mahi OP</h5>
+                            <small>Birthday Today</small><br>   
+                            <button class="btn btn-dark  btn-sm">
+                                <span class="ti-gift"></span>
+                                Wish him
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--graph scripts-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = [
+          {% for i in allclasses %}
+          "{{ i }}",
+          {% endfor %}
+        ];
+      
+        const data = {
+          labels: labels,
+          datasets: [{
+            label: 'classes Taken',
+            backgroundColor: 'rgb(25, 9, 32)',
+            borderColor: 'rgb(255, 99, 132)',
+            data:  [
+        {% for i in taken_number %}
+        {{ i }},
+        {% endfor %}
+      ],
+    }]
+  };
+      
+        const config = {
+          type: 'bar',
+          data: data,
+          options: {}
+        };
+      </script>
+      <script>
+        const myChart = new Chart(
+          document.getElementById('myChart'),
+          config
+        );
+      </script>
+      
+              
+</main>
+<script>
+    function showOverlay() {
+      var overlay = document.getElementById("overlay");
+      overlay.classList.add("show");
+    }
+  
+    function hideOverlay() {
+      var overlay = document.getElementById("overlay");
+      overlay.classList.remove("show");
+    }
+  
+    window.addEventListener("load", function() {
+      hideOverlay();
+    });
+  
+    showOverlay();
+  </script>
+{% endblock  %}

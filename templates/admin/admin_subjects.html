@@ -1,0 +1,75 @@
+{% extends 'admin/basic.html' %}
+{% load static %}
+
+{% block content %}
+<main> 
+    <section class="recent" >
+      <div class="table-div">
+          <div class="table-card " > 
+            <div class="card">
+              <form
+                  method="POST"
+                  class="needs-validation"
+                  novalidate=""
+                  autocomplete="off"
+                >{% csrf_token %}
+              <div class="card-header" >
+               <h2><center>Add subject</center></h2>
+              </div>
+              <div class="card-body" >
+                <div class="mb-3 col-12 col-md-11" style="display:flex;">
+                  <label for="fname" class="form-label fw-bold" ></i><b>Enter Subject Name : </b></label>
+                  <textarea class="custom-select-lg mb-4" style="width:90%;" name="suname" id="fname"></textarea>
+                    
+                </div>
+               
+              <center><input class="btn btn-success" style="margin-bottom:3%;" type="submit" value="Submit"><center>
+            </div>
+          </form>
+          </div>
+        </div>
+  </section>
+    <section class="recent">
+        <div class="table-div">
+            <div class="table-card ">
+              <br>
+              <center><h2>Registered Subjects</h2><center>
+                <br>
+                <div class="time-table">
+              <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th><h4> S.No</h4></th>
+                        <th><h4>Subject Name</h4></th>
+                        <th><h4>Actions </h4></th>
+                    </tr>
+                </thead>
+         
+                <tbody>
+                  {% for  item in allsubjects %}
+                    <tr>
+                        <td><h5 style="color:black;">{{ forloop.counter }}</h5></td>
+                        <td><h5 style="color:black;">{{ item.subject }}</h5></td>
+                        <td>
+                          <a style="color:green;" class="edit" title="Edit" data-toggle="tooltip" ><i class="material-icons" ></i>Edit</a>&nbsp;&nbsp;&nbsp;
+                          <a style="color:red;" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i>Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+          </div>
+            </div>
+        </div>
+        
+    </section> 
+       
+  </main>
+  {% if errorcame is 1 %}
+  <script language="JavaScript">alert('Subject Already Registered !')</script>
+{% endif %}
+{% if errorcame is 0 %}
+<script language="JavaScript">alert('Subject Successfully Registered !')</script>
+{% endif %}
+{% endblock %}

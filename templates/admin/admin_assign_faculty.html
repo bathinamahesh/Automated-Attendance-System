@@ -1,0 +1,99 @@
+{% extends 'admin/basic.html' %}
+{% load static %}
+
+{% block content %}
+<main> 
+    <section class="recent" >
+      <div class="table-div">
+          <div class="table-card " > 
+            <div class="card">
+              <form
+                  method="POST"
+                  class="needs-validation"
+                  novalidate=""
+                  autocomplete="off"
+                >{% csrf_token %}
+              <div class="card-header" >
+               <h2><center>Assign Faculty</center></h2>
+              </div>
+              <div class="card-body" >
+                <div class="mb-3 col-12 col-md-11" style="display:flex;">
+                  <label for="fname" class="form-label fw-bold" > <i class="bi bi-clipboard2-fill"></i><b>Faculty Name: </b></label>
+                  <select class="custom-select custom-select-lg mb-4" style="margin-right:2%;" id="fname" name="faculty">
+                    <option selected>Select Faculty</option>
+                    {% for i in faculty %}
+                    <option value="{{ i.facultyname }}">{{ i.facultyname.first_name }}&nbsp;{{ i.facultyname.last_name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="mb-3 col-12 col-md-11" style="display:flex;">
+                  <label for="cname" class="form-label fw-bold" style="margin-right:1.5%;"> <i class="bi bi-clipboard2-fill"></i><b>Class Name :</b></label>
+                  <select class="custom-select custom-select-lg mb-2" id="cname" name="clsname">
+                    <option selected>Select Class</option>
+                    {% for i in class %}
+                    <option value="{{ i.classname }}">{{ i.classname }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              <div class="mb-3 col-12 col-md-11" style="display:flex;">
+                <label for="sname" class="form-label fw-bold" style=""> <i class="bi bi-clipboard2-fill"></i><b>Subject Name :</b></label>
+                <select class="custom-select custom-select-lg mb-2" id="sname" name="subname">
+                  <option selected>Select Subject</option>
+                  {% for i in subject %}
+                    <option value="{{ i.subject }}">{{ i.subject }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+            
+            </div>
+              <center><input class="btn btn-success" style="margin-bottom:3%;" type="submit" value="Submit"><center>
+            </div>
+          </form>
+          </div>
+        </div>
+  </section>
+  <section class="recent">
+    <div class="table-div">
+        <div class="table-card ">
+          <br>
+          <center><h2>Faculty Assignment Details</h2><center>
+            <br>
+            <div class="time-table">
+          <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th><h4 style="color:black;">S.No</h4></th>
+                    <th><h4 style="color:black;">Faculty ID</h4></th>
+                    <th><h4 style="color:black;">Faculty name</h4></th>
+                    <th><h4 style="color:black;">Class</h4></th>
+                    <th><h4 style="color:black;">Subject</h4></th>
+                    <th><h4 style="color:black;">Actions</h4></th>
+                </tr>
+            </thead>
+     
+            <tbody>
+              {% for i in allfaculty  %}
+                <tr>
+                    <td><h5>{{ forloop.counter }}</h5></td>
+                    <td><h5>{{ i.faculty_name }}</h5></td>
+                    <td><h5>{{ i.faculty_name.facultyname.first_name }}&nbsp;{{ i.faculty_name.facultyname.last_name }}</h5></td>
+                    
+                    <td><h5>{{ i.class_name }}</h5></td>
+                    <td><h5>{{ i.subject_name }}</h5></td>
+                    <td>
+                      <a style="color:green;" class="edit" title="Edit" data-toggle="tooltip" ><i class="material-icons" ></i>Edit</a>&nbsp;&nbsp;&nbsp;
+                      <a style="color:red;" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i>Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+          
+            </tbody>
+        </table>
+      </div>
+        </div>
+    </div>
+    
+</section>
+       
+  </main>
+{% endblock %}

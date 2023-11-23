@@ -1,0 +1,67 @@
+{% extends 'admin/basic.html' %}
+{% load static %}
+
+{% block content %}
+<main> 
+    {% for global in class %}
+    <section class="recent" >
+        
+  <div class="row d-block" style="margin-top: 80px;" >
+    
+    <!--tables-->
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <center><h3 style="margin-top:3%;">ADD TIMETABLE for {{ global.classname }}</h3></center>
+        <form
+               method="POST"
+               class="needs-validation"
+               novalidate=""
+               autocomplete="off"
+             >{% csrf_token %}
+             <input type="hidden" id="{{ global.classname }}" name="classtime" value="{{ global.classname }}">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered mt-0" id="dataTable" width="90%" cellspacing="0" style="margin-left: 0px;">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            {% for per in periods %}
+                            <th>{{ per.period }}</th>
+                            {% endfor %}
+
+                        </tr>
+                    </thead>
+                    
+                       
+                    <tbody>
+                      {% for i in days %}
+                        <tr>
+                            <td>
+                           {{ i.day }}
+                            </td>
+                            {% for j in periods %}
+                            <td>
+                              <div >
+                                <select value="{{ i.day }},{{ j.period }},{{ k.subject }}" name="{{ i.day }},{{ j.period }}">
+                                  <option value="1" selected>--</option>
+                                  {% for k in subject %}
+                                  <option value="{{ i.day }},{{ j.period }},{{ k.subject }}" name="{{ i.day }},{{ j.period }}">{{ k.subject }}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                          </td>
+                          {% endfor %}
+                        </tr>
+                        {% endfor %}     
+                       
+                    </tbody>
+                </table>
+                <center><input class="btn btn-success" style="margin-bottom:3%;" type="submit" value="Submit"><center>
+            </div>
+        </div>
+      </form>
+    </div>
+</section>
+{% endfor %}
+
+{% endblock %}

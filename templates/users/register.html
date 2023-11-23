@@ -1,0 +1,245 @@
+{% extends 'admin/basic.html' %}
+{% load static %}
+
+{% block content %}
+
+<main > 
+  {% if errorcame %}
+  <style>
+    .popup {
+      position: fixed;
+      margin-left:53%;
+      margin-top: 0%;
+      width: 330px;
+      height: 61px;
+      background: linear-gradient(135deg, #d8ede7, #ebe1ef);
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(134, 99, 99, 0.2);
+      z-index: 9999;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.5s;
+  }
+  
+  .popup.show {
+      visibility: visible;
+      opacity: 1;
+  }
+  
+  .popup-content {
+      text-align: center;
+      position: relative;
+  }
+  
+  .slider-container {
+      width: 100%;
+      height: 7px;
+      background-color: #c6c6c6;
+      border-radius: 5px;
+      margin-top: 10px;
+      position: relative;
+      overflow: hidden;
+  }
+  
+  .slider {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 100%;
+      background: linear-gradient(135deg, #22946a, #a9c7a8);
+      border-radius: 5px;
+      animation: slideAnimation 10s linear infinite;
+  }
+  
+  @keyframes slideAnimation {
+      0% {
+          width: 100%;
+      }
+  
+      100% {
+          width: 0%;
+      }
+  }
+  
+  .close-button {
+      position: absolute;
+      top: -8px;
+      right: -4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+  }
+  
+  .close-button i {
+      color: #333;
+  }
+  
+  .close-button i:hover {
+      color: #f00;
+  }</style>
+  <div id="popup" class="popup">
+      <div class="popup-content">
+        <p>UserID Already Exists, Try another !</p>
+        <div class="slider-container">
+          <div class="slider"></div>
+        </div>
+        <button id="closeButton" class="close-button"><i class='bx bx-x'></i></button>
+      </div>
+    </div>
+    {% endif %}
+    <div class="w-300 p-2" style="margin-left:-10%;">
+      <div class="row justify-content-sm-center h-100">
+        <div class="col-xxl-2 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+          <div class="card shadow-lg">
+            <div class="card-body p-5">
+              <h1 class="fs-4 card-title fw-bold mb-4">Register</h1>
+              <form
+                method="POST"
+                class="needs-validation"
+                novalidate=""
+                autocomplete="off"
+              >{% csrf_token %}
+              <div class="mb-3">
+              <label for="user_status">Choose User Status :</label>
+                <select name="user_config" id="user_staus">
+                  <option value="student">student</option>
+                  <option value="faculty">faculty</option>
+                  <option value="admin">admin</option>
+
+                </select>
+              </div>
+                <div class="mb-3">
+                  <label class="mb-2 text-muted" for="id_user" >User ID</label>
+                  <input
+                    id="id_user"
+                    type="text"
+                    class="form-control"
+                    name="user_id"
+                    value=""
+                    required
+                    autofocus
+                  />
+                  <div class="invalid-feedback">ID is required</div>
+                </div>
+                <div class="mb-3">
+                  <label class="mb-2 text-muted" for="first_name" >First Name</label>
+                  <input
+                    id="first_name"
+                    type="text"
+                    class="form-control"
+                    name="user_firstname"
+                    value=""
+                    required
+                    autofocus
+                  />
+                  <div class="invalid-feedback">First Name is required</div>
+                </div>
+                <div class="mb-3">
+                  <label class="mb-2 text-muted" for="last_name" >Last Name</label>
+                  <input
+                    id="last_name"
+                    type="text"
+                    class="form-control"
+                    name="user_lastname"
+                    value=""
+                    required
+                    autofocus
+                  />
+                  <div class="invalid-feedback">Last Name is required</div>
+                </div>
+                <div class="mb-3">
+                  <label class="mb-2 text-muted" for="birthday" style="padding-right:10px;">Date Of Birth :  </label>
+                        <input type="date" id="birthday" name="user_dob">
+                  <div class="invalid-feedback">DOB required</div>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="mb-2 text-muted" for="select_sex"
+                    >Gender : </label
+                  >
+                  <select class="form-select" aria-label="Default select example" name="user_sex" id="select_sex">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>                   
+                <div class="mb-3" >
+                  <label class="mb-2 text-muted" for="email"
+                    >E-mail Address</label
+                  >
+                  <input
+                    id="email"
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    value=""
+                    required
+                  />
+                  <div class="invalid-feedback">Email is invalid</div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="mb-2 text-muted" for="password"
+                    >Password</label
+                  >
+                  <input
+                    id="password"
+                    type="password"
+                    class="form-control"
+                    name="password"
+                    required
+                  />
+                  <div class="invalid-feedback">Password is required</div>
+                </div>
+
+
+                <div class="align-items-center d-flex">
+                  <button type="submit" class="btn btn-primary ms-auto">
+                    Register
+                  </button>
+                </div>
+              </form>
+            </div>
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'js/login.js'%}"></script>
+  </main>
+  <script>
+    function showPopup() {
+        var popup = document.getElementById("popup");
+        popup.classList.add("show");
+      }
+      
+      function hidePopup() {
+        var popup = document.getElementById("popup");
+        popup.classList.remove("show");
+      }
+      
+      document.addEventListener("DOMContentLoaded", function() {
+        var closeButton = document.getElementById("closeButton");
+        var popupContent = document.querySelector(".popup-content");
+        var popup = document.getElementById("popup");
+        var slider = document.querySelector(".slider");
+      
+        closeButton.addEventListener("click", function() {
+          hidePopup();
+        });
+      
+        showPopup();
+      
+        var sliderContainerWidth = popupContent.offsetWidth - 20;
+        slider.style.width = sliderContainerWidth + "px";
+      
+        slider.addEventListener("animationend", function() {
+          hidePopup();
+        });
+      
+        setTimeout(function() {
+          slider.style.animation = "slideAnimation 4s linear forwards";
+        }, 100);
+      });
+      
+      
+    </script>     
+{% endblock %}

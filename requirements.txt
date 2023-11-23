@@ -1,0 +1,16 @@
+crispy-bootstrap5==0.6
+Django==4.1
+django-ckeditor==6.4.2
+django-crispy-forms==1.14.0
+django-js-asset==2.0.0
+numpy
+keras==2.9.0
+tensorflow
+numpy==1.23.1
+opencv-python==4.6.0.66
+pandas==1.4.3
+parso==0.8.3
+pexpect==4.8.0
+pickleshare==0.7.5
+Pillow==9.2.0
+dlib

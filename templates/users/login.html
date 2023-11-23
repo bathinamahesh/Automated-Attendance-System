@@ -1,0 +1,317 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="This is a login page template based on Bootstrap 5"
+    />
+    <title>
+      {% block title %}
+
+      CRMS -Login Page
+          
+        {% endblock title %}</title>
+    <link
+      href="{% static 'css/bootstrap.min.css' %}"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+  </head>
+  <style>
+    /*New Form Write Notice */
+    .popup {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 330px;
+      height: 61px;
+      background: linear-gradient(135deg, #d8ede7, #ebe1ef);
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(134, 99, 99, 0.2);
+      z-index: 9999;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.5s;
+      top: -100%; /* Updated */
+    }
+    
+    .popup.show {
+      visibility: visible;
+      opacity: 1;
+      top: 3%; /* Updated */
+      animation: slideDownAnimation 0.8s forwards;
+    }
+    
+    @keyframes slideDownAnimation {
+      0% {
+        top: -100%;
+      }
+      100% {
+        top: 5%;
+      }
+    }
+    
+
+.popup-content {
+  text-align: center;
+  position: relative;
+}
+
+.slider-container {
+  width: 100%;
+  height: 7px;
+  background-color: #c6c6c6;
+  border-radius: 5px;
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.slider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(135deg, #22946a, #a9c7a8);
+  border-radius: 5px;
+  animation: slideAnimation 10s linear infinite;
+}
+
+@keyframes slideAnimation {
+  0% {
+      width: 100%;
+  }
+
+  100% {
+      width: 0%;
+  }
+}
+
+.close-button {
+  position: absolute;
+  top: -8px;
+  right: -4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.close-button i {
+  color: #333;
+}
+
+.close-button i:hover {
+  color: #f00;
+}
+</style>
+<style>
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s;
+  }
+
+  .overlay.show {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .overlay-content {
+    text-align: center;
+    color: #fff;
+  }
+
+  #spinner2 {
+    height: 100px;
+    width: 100px;
+    border: 10px solid #fff;
+    border-top: 10px solid #1abc9c;
+    border-radius: 50%;
+    animation: spin 3s linear infinite;
+  }
+
+  @keyframes spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<div id="overlay2" class="overlay">
+  <div class="overlay-content">
+    <div id="spinner2"></div>
+    <p>Please wait!</p>
+  </div>
+</div>
+
+  <body>
+    <section class="h-100">
+      <div class="container h-100">
+        <div class="row justify-content-sm-center h-100">
+          <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+            <div class="text-center my-5">
+              <img src="{% static 'img/logo.jpeg' %}" alt="logo" width="100" />
+            </div>
+            
+            <div class="card shadow-lg">
+              {% if errorlogin %}
+          <div id="popup" class="popup">
+            <div class="popup-content">
+              <p>Invalid Credentials !</p>
+              <div class="slider-container">
+                <div class="slider"></div>
+              </div>
+              <button id="closeButton" class="close-button"><i class='bx bx-x'></i></button>
+            </div>
+          </div>
+          {% endif %}
+              <div class="card-body p-5">
+                <h1 class="fs-4 card-title fw-bold mb-4">Login</h1>
+                <form
+                  method="POST"
+                  class="needs-validation"
+                  novalidate=""
+                  autocomplete="off"
+                >{% csrf_token %}
+                  <div class="mb-3">
+                    <label class="mb-2 text-muted" for="email">User ID</label>
+                    <input
+                      id="email"
+                      type="text"
+                      class="form-control"
+                      name="username"
+                      value=""
+                      required
+                      autofocus
+                    />
+                    <div class="invalid-feedback">User ID is is invalid</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <div class="mb-2 w-100">
+                      <label class="text-muted" for="password">Password</label>
+                      <a href="forgot.html" class="float-end">
+                        Forgot Password?
+                      </a>
+                    </div>
+                    <input
+                      id="password"
+                      type="password"
+                      class="form-control"
+                      name="password"
+                      required
+                    />
+                    <div class="invalid-feedback">Password is required</div>
+                  </div>
+
+                  <div class="d-flex align-items-center">
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        name="remember"
+                        id="remember"
+                        class="form-check-input"
+                      />
+                      <label for="remember" class="form-check-label"
+                        >Remember Me</label
+                      >
+                    </div>
+                    <button type="submit" class="btn btn-primary ms-auto">
+                      Login
+                    </button>
+                    
+                  </div>
+                </form>
+              </div>
+              
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            
+            <div class="text-center mt-5 text-muted" style="postion:bottom;">
+              Copyright &copy; 2022-2024 &mdash; CRMS
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="{% static 'js/login.js' %}"></script>
+    <script>
+      function showPopup() {
+          var popup = document.getElementById("popup");
+          popup.classList.add("show");
+        }
+        
+        function hidePopup() {
+          var popup = document.getElementById("popup");
+          popup.classList.remove("show");
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() {
+          var closeButton = document.getElementById("closeButton");
+          var popupContent = document.querySelector(".popup-content");
+          var popup = document.getElementById("popup");
+          var slider = document.querySelector(".slider");
+        
+          closeButton.addEventListener("click", function() {
+            hidePopup();
+          });
+        
+          showPopup();
+        
+          var sliderContainerWidth = popupContent.offsetWidth - 20;
+          slider.style.width = sliderContainerWidth + "px";
+        
+          slider.addEventListener("animationend", function() {
+            hidePopup();
+          });
+        
+          setTimeout(function() {
+            slider.style.animation = "slideAnimation 4s linear forwards";
+          }, 100);
+        });
+        
+        
+      </script>   
+      <script>
+        function showOverlay() {
+          var overlay = document.getElementById("overlay2");
+          overlay.classList.add("show");
+        }
+      
+        function hideOverlay() {
+          var overlay = document.getElementById("overlay2");
+          overlay.classList.remove("show");
+        }
+      
+        // Show the overlay when the form submits a POST request
+        document.querySelector('form').addEventListener('submit', function() {
+          showOverlay();
+        });
+      
+        // Hide the overlay when the page finishes reloading
+        window.addEventListener('load', function() {
+          hideOverlay();
+        });
+      </script> 
+  </body>
+</html>

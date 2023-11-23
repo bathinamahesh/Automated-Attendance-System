@@ -1,0 +1,42 @@
+{% extends 'faculty/faculty_main.html' %}
+{% load static %}
+
+{% block content %}
+<main>
+    <section class="recent">
+        <div class="table-div">
+            <div class="table-card">
+                <h3>Time Table</h3>
+                
+                <div class="time-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                {% for i in periods %}
+                                <th scope="col">{{ i.period }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for day, periods_list in day_periods %}
+                            <tr> 
+                                <td>{{ day }}</td>
+                                {% for period_value in periods_list %}
+                                    <td>{{ period_value }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+           
+            </div>
+        </div>
+    </section>
+    
+</main>
+
+
+{% endblock %}

@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<!-- Designined by CodingLab | www.youtube.com/codinglabyt -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!--<title> Responsiive Admin Dashboard | CodingLab </title>-->
+    <link rel="stylesheet" href="{% static 'admincss/adminstyle.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Boxicons CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <!--Bootstrap connection-->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+     <link
+rel="stylesheet"
+type="text/css"
+href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css"
+/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+   </head>
+   <link rel="icon" type="image/x-icon" href="{% static 'img/webpage.png' %}">
+<body>
+        <div class="sidebar">
+              <div class="logo-details">
+                <i class='bx bxl-c-plus-plus'></i>
+                <span class="logo_name">CRMS</span>
+              </div>
+                <ul class="nav-links">
+                  <li>
+                    <a href="{% url 'admin_home' %}">
+                      <i class='bx bx-grid-alt' ></i>
+                      <span class="links_name">Dashboard</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'admin_student' %}">
+                      <i class='bx bx-box' ></i>
+                      <span class="links_name">Students</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'admin_faculty' %}">
+                      <i class='bx bx-list-ul' ></i>
+                      <span class="links_name">Faculty</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'admin_classes' %}">
+                      <i class='bx bx-pie-chart-alt-2' ></i>
+                      <span class="links_name">Classes</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'admin_subjects' %}">
+                      <i class='bx bx-coin-stack' ></i>
+                      <span class="links_name">Subjects</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'admin_assign_faculty' %}" >
+                      <i class='bx bx-book-alt' ></i>
+                      <span class="links_name">Assign faculty</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'admin_timetable' %}" >
+                      <i class='bx bx-time-five' ></i>
+                      <span class="links_name">Add Timetable</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'register' %}" >
+                      <i class='bx bx-time-five' ></i>
+                      <span class="links_name">Register <br>(optional)</span>
+                    </a>
+                  </li>
+                  
+                  <li class="log_out">
+                    <a href="{% url 'logout' %}">
+                      <i class='bx bx-log-out'></i>
+                      <span class="links_name">Log out</span>
+                    </a>
+                  </li>
+                </ul>
+      </div>
+      <div class="main-content">
+        {% block content %}
+        {% endblock content %}
+
+      </div>
+
+  <script>
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".sidebarBtn");
+    sidebarBtn.onclick = function() {
+      sidebar.classList.toggle("active");
+      if(sidebar.classList.contains("active")){
+      sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+    }else
+      sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+    }
+ </script>
+<script>
+ $(document).ready(function() {
+  $('#example').bdt();;
+} );
+</script>
+<script>
+    function showPopup() {
+        var popup = document.getElementById("popup");
+        popup.classList.add("show");
+      }
+      
+      function hidePopup() {
+        var popup = document.getElementById("popup");
+        popup.classList.remove("show");
+      }
+      
+      document.addEventListener("DOMContentLoaded", function() {
+        var closeButton = document.getElementById("closeButton");
+        var popupContent = document.querySelector(".popup-content");
+        var popup = document.getElementById("popup");
+        var slider = document.querySelector(".slider");
+      
+        closeButton.addEventListener("click", function() {
+          hidePopup();
+        });
+      
+        showPopup();
+      
+        var sliderContainerWidth = popupContent.offsetWidth - 20;
+        slider.style.width = sliderContainerWidth + "px";
+      
+        slider.addEventListener("animationend", function() {
+          hidePopup();
+        });
+      
+        setTimeout(function() {
+          slider.style.animation = "slideAnimation 4s linear forwards";
+        }, 100);
+      });
+      
+      
+    </script>  
+</body>
+</html>
